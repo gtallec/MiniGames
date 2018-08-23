@@ -1,0 +1,102 @@
+ARCHITECTURE
+
+----- GameHandler -----
+---MODEL---
+  Handle 'JOIN' and 'CREATE' features.
+
+  Attributes :
+  . A list of GameLaunchers.
+
+  Methodes :
+  . Create : Add a Game Launcher to the list.
+  . Join : join one of the GameLaunchers in the list.
+
+---VIEW---
+Handle the strides between the different game images.
+
+
+----- GameLauncher -----
+---MODEL---
+  Handle the launching process.
+
+  Attributes :
+  . A list of the web sockets waiting for enough players .
+  . Number of necessary players.
+  . Max Number of players.
+  . Current number of players.
+
+  Methodes :
+  .AddPlayer : add a socket to the list of sockets, parametrize the socket for polling and increments current Number
+  of players, if current number of players equals max number of players, launch
+  the game.
+  .Launch : create an instance of the game with everything it needs to sustain itself
+  then destroys the GameLauncher ?
+  .Poll : if current number of players is between necessary and max, launch a poll
+  that sends a yes/no image to all players. If the yes wins(without needing the no to win against the no)
+  then launch.
+
+---VIEW---
+Handle the size of the game images in the saloon
+
+-----GAME-----
+
+  Attributes:
+  .A list of players.
+  .A GameID.
+
+-----SMALLWORD-----
+inherits Game
+
+  Attributes:
+  .A Map
+  .A TurnHandler
+
+----- Region -----
+---MODEL---
+
+  Attributes :
+  .boolean border true if the region is a border
+  .list of tokens on the region
+
+---View---
+Display the region
+
+-----Map-----
+---MODEL---
+
+  Attributes :
+  .list of regions.
+  .adjacency matrix.
+
+---VIEW---
+Display the Map canvas ?
+
+-----Token-----
+---MODEL---
+
+  Attributes :
+  .Value : potentially .
+  (For a class playerToken that inherits Token, add player it belongs to)
+
+---View---
+Display the token.
+
+-----Player-----
+---MODEL---
+
+  Attributes:
+  .A list of possessed tokens.
+  .an ID.
+  .list of possessed regions.
+  .a reference to the Map
+
+  Method:
+  .Conquer: Too long to explain but yet easy to understand
+
+-----Turnhandler-----
+---MODEL---
+
+  Attributes:
+  .A number of players.
+  .A current player.
+  .A turn number.

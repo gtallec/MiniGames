@@ -1,5 +1,5 @@
 let GameHandler = require('./server/lobby/model/GameHandler');
-let GameSocket = require('./server/secureSocket/GameSocket');
+let ServerGameSocket = require('./server/secureSocket/ServerGameSocket');
 
 let express = require('express');
 let app = express();
@@ -21,10 +21,9 @@ let SOCKET_LIST = {};
 
 let io = require('socket.io')(serv,{});
 io.sockets.on('connection', function(socket){
-  let gameSocket = new GameSocket.GameSocket(socket, gameHandler);
+  let gameSocket = new ServerGameSocket.ServerGameSocket(socket, gameHandler);
   console.log('gameSocket created');
   gameSocket.enable('JOIN');
-  gameSocket.disable('JOIN');
 });
 
 

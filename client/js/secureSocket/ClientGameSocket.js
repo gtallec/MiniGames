@@ -1,4 +1,4 @@
-class ServerGameSocket{
+class ClientGameSocket{
   /* Controls the message that the sockets can receive */
   constructor(socket, holder)
   {
@@ -10,15 +10,17 @@ class ServerGameSocket{
     /* The methodDictionary is a placeholder to monitor exactly what the socket
     can answer to */
     this.methodDictionary = {};
-    this.messagePrefixe = 'SRV';
-    this.receivePrefixe = 'CLT';
+    this.messagePrefixe = 'CLT';
+    this.receivePrefixe = 'SRV';
   }
 
   //LISTENER PART
   enableListener(method){
     let meth = this.receivePrefixe + '_' + method;
+    console.log(meth);
     if (meth in this.methodDictionary){
-      this.socket.on(method,this.methodDictionary[meth]);
+      console.log('Bonjour bonjour');
+      this.socket.on(meth,this.methodDictionary[meth]);
     }
   }
 
@@ -30,13 +32,14 @@ class ServerGameSocket{
   }
   addListenerMethod(method,func){
     let key = this.receivePrefixe + '_' + method;
+    console.log('LISTENER', key);
     this.methodDictionary[key] = func;
   }
 
   //EMITTER PART
   emit(message,data){
     let mes = this.messagePrefixe + '_' + message;
-    this.socket.emit(mes,data)
+    this.socket.emit(message,data)
   }
 
   identifyingProtocol(index)
@@ -47,4 +50,3 @@ class ServerGameSocket{
   }
 
 }
-exports.ServerGameSocket = ServerGameSocket;

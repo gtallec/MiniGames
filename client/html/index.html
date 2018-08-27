@@ -1,0 +1,10 @@
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type = 'text/javascript' src="client/js/secureSocket/ClientGameSocket.js"></script>
+<script type = 'text/javascript' src="client/js/secureSocket/LobbyClientGameSocket.js"></script>
+<script>
+  let socket = io();
+  let lobbyClientGameSocket = new LobbyClientGameSocket(socket,undefined);
+  lobbyClientGameSocket.enableListener('IDPROT');
+</script>
+<button type='button' onclick='join()'>JOIN</button>
+<button type='button' onclick='create()'>CREATE</button>

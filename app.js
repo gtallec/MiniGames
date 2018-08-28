@@ -23,6 +23,7 @@ app.use('/client',express.static(__dirname + '/client'));
 
 io.on('connection', function(socket){
   let gameSocket = new LobbyServerGameSocket.LobbyServerGameSocket(socket, gameHandler);
+  gameSocket.enableAllListener();
   console.log('SOCKET SUCCESSFULLY CREATED');
   gameHandler.addSocket(gameSocket);
 });

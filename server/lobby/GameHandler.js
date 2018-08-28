@@ -2,38 +2,38 @@ let GameLauncher = require('./GameLauncher')
 class GameHandler{
 
   constructor(){
-    this.listOfGameLaunchers = {};
+    /*listOfGameLaunchers is a dictionary indexed on gameName as key and a list
+    of game launcers corresponding to this gameName as value*/
+    this.dictOfGameLaunchers = {};
     this.listOfLobbyServerGameSockets = {};
     this.index = 0;
   }
   addSocket(lobbyServerGameSocket)
   {
-    lobbyServerGameSocket.enableListener('IDPROT');
     lobbyServerGameSocket.identifyingProtocol(this.index);
     this.listOfLobbyServerGameSockets[this.index] = lobbyServerGameSocket;
     this.index++;
     console.log('SOCKET SUCCESSFULLY ADDED');
   }
-  create(gameName, playerNumber){
-    //CREATE THE GAME
-    if (!(gameName in this.listOfGameLaunchers)){
-      this.listOfGameLaunchers[gameName] = [];
-    }
-    let newGameLauncher = new GameLauncher.GameLauncher(gameName);
-    newGameLauncher.addPlayer(playerNumber);
-    this.listOfGameLaunchers[gameName].push(newGameLauncher);
 
-    //MAKE THE PLAYER THAT CREATED IT JOIN
-    this.join(gameName,playerNumber);
-
+  display(index){
+    //retrieve the necessary information for displaying the different gamelaunchers
+    let gameLauncherData = this.retrieveAllGameLaunchersData();
+    console.log('INDEX', index);
+    console.log('DATA SENT TO THE PAGE', gameLauncherData);
+    this.listOfLobbyServerGameSockets[index].display(gameLauncherData);
   }
 
-  join(gameName, playerNumber){
-    //JOIN AN EXISTING GAME
-    if (gameName in this.listOfGameLaunchers){
-      this.listOfGameLaunchers[gameName].addPlayer(playerNumber);
+  retrieveAllGameLaunchersData(){
+    let data = {};
+    for (let gameName in this.dictOfGameLaunchers){
+      let gameLauncherList = this.dictOfGameLaunchers[gameName];
+      for(let i = 0 ; i < gameLauncherList.length ; i++){
+        gameLauncherList.push(gameLauncherList[i].getGameLauncherData());
+      }
+      data[gameName] = gameLauncherList;
     }
+    return data;
   }
-
 }
 exports.GameHandler = GameHandler;

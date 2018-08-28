@@ -15,6 +15,20 @@ class ServerGameSocket{
   }
 
   //LISTENER PART
+
+  enableAllListener(){
+    for (let meth in this.methodDictionary){
+      console.log(meth.slice(4,meth.length));
+      this.enableListener(meth.slice(4,meth.length));
+    }
+  }
+  disableAllListener(){
+    for (let meth in this.methodDictionary){
+      console.log(meth.slice(4,meth.length));
+      this.disableListener(meth.slice(4,meth.length));
+    }
+  }
+
   enableListener(method){
     let meth = this.receivePrefixe + '_' + method;
     if (meth in this.methodDictionary){

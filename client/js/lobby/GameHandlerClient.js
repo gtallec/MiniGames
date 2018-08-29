@@ -15,17 +15,37 @@ class GameHandlerClient{
   }
 
   display(index,data){
-    if (!this.everDisplayed){
+    if (this.everDisplayed){
       //TODO : Modify what's changed
     }
     else{
       //Just copy the data in the dictOfGameLaunchers
-      this.dictOfGameLaunchers = data;
-      console.log('bjour');
+      this.extractGameLaunchers(data,index);
+      this.displayGameLaunchers();
     }
-    //retrieve the necessary information for displaying the different gamelaunchers
-    let gameLauncherData = this.retrieveAllGameLaunchersData();
-    console.log('INDEX', index);
-    console.log('DATA SENT TO THE PAGE', gameLauncherData);
-    this.listOfLobbyServerGameSockets[index].display(gameLauncherData);
   }
+  displayGameLaunchers(){
+    let container = document.querySelector('.container')
+    for (let gameName in this.dictOfGameLaunchers){
+      let gameNameContainer = document.createElement('div');
+      gameNameContainer.setAttribute('id',gameName);
+      for (let i = 0 ; i < this.dictOfGameLaunchers[gameName].length ; i++){
+        this.dictOfGameLaunchers[gameName][i].display(gameNameContainer);
+      }
+      container.appendChild(gameNameContainer);
+    }
+  }
+  extractGameLaunchers(data,index){
+    for (let gameName in data){
+      let gameLauncherList = [];
+      for(let i = 0 ; i < data[gameName].length ; i++){
+        let dataElement = data[gameName][i];
+        let maxPlayers = dataElement.maxPlayers;
+        let currentPlayers = dataElement.currentPlayers;
+        gameLauncherList.push(new GameLauncherClient(gameName,currentPlayers,maxPlayers,index,this));
+      }
+      this.dictOfGameLaunchers[gameName] = gameLauncherList;
+    }
+    console.log(this.dictOfGameLaunchers)
+  }
+}

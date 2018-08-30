@@ -1,17 +1,20 @@
 class GameLauncherClient{
 
-  constructor(gameName, currentPlayers, maxPlayers, index, gameHandler){
+  constructor(gameName, currentPlayers, maxPlayers, id, playerID, gameHandler){
     this.gameName = gameName;
     this.currentPlayers = currentPlayers;
     this.maxPlayers = maxPlayers;
-    this.index = index;
+    this.id = id;
+    this.playerID = playerID;
     this.gameHandler = gameHandler;
   }
-  display(gameNameContainer,index){
+  display(gameListContainer){
 
     let gameLauncher = this;
 
-
+    let listElementContainer = document.createElement('div');
+    listElementContainer.setAttribute('class','gameLauncher');
+    listElementContainer.setAttribute('id',this.id);
 
     let imgHolder = document.createElement('div');
     imgHolder.setAttribute('class', 'imageHolder');
@@ -26,38 +29,35 @@ class GameLauncherClient{
 
 
     let controlButtons = document.createElement('div');
-    controlButtons.setAttribute('class', 'controlButtons');
+
 
 
     let joinButton = document.createElement('button');
     joinButton.innerHTML = 'JOIN';
 
+    let gameHandler = this.gameHandler;
+    let gameName = this.gameName;
+    let gameID = this.id;
+    let playerID = this.playerID;
     let join = function(){
       //Send the message to server that a new player entered the game
-      console.log('HELLO');
-      let gameHandler = gameLauncher.getGameHandler();
-      //gameHandler.join()
-      window.location = window.location + '/games/' + '?game=' + gameLauncher.getGameName()
-                                                    + '?playerID=' + gameLauncher.getIndex();
+
+      gameHandler.join(gameName, gameID);
+      window.location = window.location + '/games/' + '?gameName=' + gameName
+                                                    + '&gameID=' + gameID
+                                                    + '&playerID=' + playerID;
     }
     joinButton.onclick = join;
+    joinButton.setAttribute('class', 'controlButtons');
 
 
-    let createButton = document.createElement('button');
-    createButton.innerHTML = 'CREATE';
+    listElementContainer.appendChild(imgHolder);
+    listElementContainer.appendChild(playerHolder);
+    listElementContainer.appendChild(joinButton);
+
+    gameListContainer.appendChild(listElementContainer);
 
 
-    controlButtons.appendChild(joinButton);
-    controlButtons.appendChild(createButton);
-
-
-
-
-
-
-    gameNameContainer.appendChild(imgHolder);
-    gameNameContainer.appendChild(playerHolder);
-    gameNameContainer.appendChild(controlButtons);
   }
 
   getGameHandler(){
@@ -66,7 +66,14 @@ class GameLauncherClient{
   getIndex(){
     return this.index;
   }
+  getPlayerID(){
+    return this.playerID;
+  }
   getGameName(){
     return this.gameName;
+  }
+  suppressElement(gameListContainer){
+    let elementToDelete = gameListContainer.querySelector('#' + this.id);
+    gameListContainer.removeChild(elementToDelete);
   }
 }

@@ -11,21 +11,10 @@
       <script type = 'text/javascript' src="client/js/lobby/GameHandlerClient.js"></script>
       <script type = 'text/javascript' src="client/js/lobby/GameLauncherClient.js"></script>
       <script>
-      /*
         let gameHandlerClient = new GameHandlerClient();
         let socket = io();
         let lobbyClientGameSocket = new LobbyClientGameSocket(socket,gameHandlerClient);
         gameHandlerClient.setSocket(lobbyClientGameSocket);
-      */
-      let data = {'smallworld' :
-                                  [
-                                   {currentPlayers : 0, maxPlayers : 5},
-                                   {currentPlayers : 1, maxPlayers : 8}
-                                  ]
-                 }
-      let gameHandlerClient = new GameHandlerClient();
-      gameHandlerClient.display(0,data);
-
       </script>
   </body>
 </html>

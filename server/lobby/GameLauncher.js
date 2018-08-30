@@ -10,6 +10,7 @@ class GameLauncher{
 
   getGameLauncherData(){
     let data = {};
+    console.log('LA COUCARACHA');
     data['currentPlayers'] = this.currentPlayers;
     data['maxPlayers'] = this.maxPlayers;
     return data;

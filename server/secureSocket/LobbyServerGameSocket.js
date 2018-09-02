@@ -11,17 +11,17 @@ class LobbyServerGameSocket extends ServerGameSocket.ServerGameSocket{
     // CREATE
     let create = function(data){
       let gameName = data.gameName;
-      console.log('BONJOUR BONJOUR');
       gameHandler.create(gameName);
     };
     // JOIN
     let join = function(data){
+      let index = lobbyServerGameSocket.getIndex();
+      console.log('FAUT PAS CROIRE CE QUE DISE LES JOURNAUX',index);
       let gameName = data.gameName;
-      let gameNumber = data.gameNumber;
-      gameHandler.join(gameName,gameNumber,serverGameSocket);
+      let gameID = data.gameID;
+      gameHandler.join(gameName,gameID,index);
     };
     let identify = function(data){
-      console.log('IDENTIFICATION PROCESS COMPLETED, BRAVO');
       let gameHandler = lobbyServerGameSocket.getHolder();
       gameHandler.display(lobbyServerGameSocket.getIndex());
     };
@@ -33,9 +33,16 @@ class LobbyServerGameSocket extends ServerGameSocket.ServerGameSocket{
   }
 
   display(data){
-    console.log('DISPLAY MESSAGE SENT');
     this.emit('DISPLAY', data);
-    console.log('dataToSend',data);
+  }
+  join(){
+    this.emit('JOIN');
+  }
+  update(data){
+    this.emit('UPDATE',data);
+  }
+  getIndex(){
+    return this.id;
   }
 
 

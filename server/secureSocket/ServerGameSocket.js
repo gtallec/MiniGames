@@ -18,13 +18,11 @@ class ServerGameSocket{
 
   enableAllListener(){
     for (let meth in this.methodDictionary){
-      console.log(meth.slice(4,meth.length));
       this.enableListener(meth.slice(4,meth.length));
     }
   }
   disableAllListener(){
     for (let meth in this.methodDictionary){
-      console.log(meth.slice(4,meth.length));
       this.disableListener(meth.slice(4,meth.length));
     }
   }
@@ -55,9 +53,9 @@ class ServerGameSocket{
 
   identifyingProtocol(index)
   {
+    console.log('JE NE SUIS PAS -1 JE SUIS', index);
     this.id = index;
     this.emit('IDPROT',{guestNumber : index});
-    console.log('IDENTIFICATION MESSAGE SENT');
   }
 
 }

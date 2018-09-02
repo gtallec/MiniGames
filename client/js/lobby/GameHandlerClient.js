@@ -11,7 +11,6 @@ class GameHandlerClient{
   {
     lobbyClientGameSocket.enableAllListener();
     this.lobbyClientGameSocket = lobbyClientGameSocket;
-    console.log('SOCKET SUCCESSFULLY ADDED');
   }
 
   display(index,data){
@@ -66,17 +65,18 @@ class GameHandlerClient{
       }
       this.dictOfGameLaunchers[gameName] = gameLauncherList;
     }
-    console.log(this.dictOfGameLaunchers);
   }
   join(gameName,gameID){
+    console.log('gameID', gameID);
+    console.log('gameName', gameName);
     this.lobbyClientGameSocket.join(gameName,gameID);
   }
   add(data,index){
     let indexGameLauncher = data.indexGameLauncher;
+    console.log(indexGameLauncher);
     let maxPlayers = data.maxPlayers;
     let currentPlayers = data.currentPlayers;
     let gameName = data.gameName;
-    console.log(gameName);
     if (!(gameName in this.dictOfGameLaunchers)){
       this.dictOfGameLaunchers[gameName] = {};
     }
@@ -85,6 +85,15 @@ class GameHandlerClient{
 
     let gameListContainer = document.querySelector('#' + gameName).querySelector('.gameListContainer');
     this.dictOfGameLaunchers[gameName][indexGameLauncher].display(gameListContainer);
+    console.log(this.dictOfGameLaunchers);
 
+  }
+  update(data){
+    let gameName = data.gameName;
+    let gameID = data.gameID;
+    console.log(data.currentPlayers)
+    let gameNameContainer = document.querySelector('#' + gameName).querySelector('#gameLauncher' + gameID);
+    console.log('UPDATING THE MAMBO JAMBO');
+    this.dictOfGameLaunchers[gameName][gameID].update(data,gameNameContainer);
   }
 }

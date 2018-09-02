@@ -14,7 +14,7 @@ class GameLauncherClient{
 
     let listElementContainer = document.createElement('div');
     listElementContainer.setAttribute('class','gameLauncher');
-    listElementContainer.setAttribute('id',this.id);
+    listElementContainer.setAttribute('id','gameLauncher' + this.id);
 
     let imgHolder = document.createElement('div');
     imgHolder.setAttribute('class', 'imageHolder');
@@ -24,7 +24,22 @@ class GameLauncherClient{
 
     let playerHolder = document.createElement('div');
     playerHolder.setAttribute('class', 'playerHolder');
-    playerHolder.innerHTML = this.currentPlayers + '/' + this.maxPlayers;
+
+    let currentPlayerHolder = document.createElement('div');
+    currentPlayerHolder.setAttribute('class', 'currentPlayerHolder');
+    currentPlayerHolder.innerHTML = this.currentPlayers;
+
+    let separationHolder = document.createElement('div');
+    separationHolder.setAttribute('class', 'separatorHolder');
+    separationHolder.innerHTML = '/';
+
+    let maxPlayerHolder = document.createElement('div');
+    maxPlayerHolder.setAttribute('class', 'maxPlayerHolder');
+    maxPlayerHolder.innerHTML = this.maxPlayers;
+
+    playerHolder.appendChild(currentPlayerHolder);
+    playerHolder.appendChild(separationHolder);
+    playerHolder.appendChild(maxPlayerHolder);
 
 
 
@@ -43,9 +58,11 @@ class GameLauncherClient{
       //Send the message to server that a new player entered the game
 
       gameHandler.join(gameName, gameID);
+      /*
       window.location = window.location + '/games/' + '?gameName=' + gameName
                                                     + '&gameID=' + gameID
                                                     + '&playerID=' + playerID;
+      */
     }
     joinButton.onclick = join;
     joinButton.setAttribute('class', 'controlButtons');
@@ -75,5 +92,13 @@ class GameLauncherClient{
   suppressElement(gameListContainer){
     let elementToDelete = gameListContainer.querySelector('#' + this.id);
     gameListContainer.removeChild(elementToDelete);
+  }
+  update(data, gameLauncherContainer){
+    console.log('DITES LUI QUE JE SUIS COMME ELLE');
+    let currentPlayerContainer = gameLauncherContainer.querySelector('.currentPlayerHolder');
+    currentPlayerContainer.innerHTML = data.currentPlayers;
+
+
+
   }
 }

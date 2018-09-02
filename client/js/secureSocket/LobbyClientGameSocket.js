@@ -3,32 +3,37 @@ class LobbyClientGameSocket extends ClientGameSocket{
   constructor(socket,holder)
   {
     super(socket,holder)
-
+    this.nextURL = undefined;
     //LISTENER PART
       //IDENTIFICATION PROTOCOL
     let lobbyClientGameSocket = this;
     let gameHandlerClient = this.holder;
-    let lobbyClientGameSocketID = this.id;
 
     let identify = function(data){
       let index = data.guestNumber;
-      console.log('IDENTIFICATION MESSAGE RECEIVED');
-      console.log(index);
       lobbyClientGameSocket.identifyingProtocol(index);
     }
     let display = function(data){
-      console.log('DISPLAY MESSAGE RECEIVED');
-      gameHandlerClient.display(lobbyClientGameSocketID,data);
+      gameHandlerClient.display(lobbyClientGameSocket.getIndex(),data);
     }
     let add = function(data){
-      console.log('BIEN RECU MONIQUE',data);
-      gameHandlerClient.add(data,lobbyClientGameSocketID);
+      gameHandlerClient.add(data,lobbyClientGameSocket.getIndex());
+      console.log('ADD', data.indexGameLauncher);
     }
+    let join = function(){
+      console.log(lobbyClientGameSocket.getNextURL());
+      window.location = lobbyClientGameSocket.getNextURL();
+    }
+    let update = function(data){
+      gameHandlerClient.update(data);
+    }
+
       //ADDING METHODS TO DICT
     this.addListenerMethod('IDPROT',identify);
     this.addListenerMethod('DISPLAY',display);
     this.addListenerMethod('ADD', add);
-    console.log(this.methodDictionary);
+    this.addListenerMethod('JOIN', join);
+    this.addListenerMethod('UPDATE', update);
   }
   join(gameName,gameID){
     this.emit('JOIN',{
@@ -36,6 +41,11 @@ class LobbyClientGameSocket extends ClientGameSocket{
                       gameID : gameID
                      }
              );
+    console.log('JE PASSE PAR LA');
+    this.nextURL = window.location + 'games/'
+                                   + gameName + '/'
+                                   + gameID
+                                   + '?playerID=' + this.id;
   }
   create(gameName){
     this.emit('CREATE',{gameName : gameName});
@@ -45,5 +55,8 @@ class LobbyClientGameSocket extends ClientGameSocket{
   }
   getHolder(){
     return this.holder;
+  }
+  getNextURL(){
+    return this.nextURL;
   }
 }
